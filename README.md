@@ -1,14 +1,14 @@
-# PinDAO: A Community-Driven IPFS Pinning Protocol
+# PinDAO: A Community-Driven IPFS Pinning Protocol 📌🌐
 
-## Abstract
+## Abstract 🔬
 
 PinDAO is a decentralized protocol designed to incentivize distributed file persistence on the InterPlanetary File System (IPFS) through tokenized rewards on EVM-compatible blockchains. By leveraging a pin-for-pin mechanism and an auction-based queue system, PinDAO ensures reliable file availability while generating intrinsic value for its underlying token ($PIN).
 
-## Introduction
+## Introduction 🌍
 
 IPFS lacks a native economic model for long-term file persistence. While centralized pinning services exist, they undermine the principles of decentralization that distributed technology is founded upon. While decentralized solutions like Filecoin exist, they operate on their own siloed networks outside of blockchains that utilize IPFS for storage. PinDAO introduces a tokenized, trustless solution where nodes are rewarded for pinning files while enabling users to prioritize content storage through market-driven mechanisms. Integrating PinDAO directly on EVM-compatible networks enhances composability, accessibility, and efficiency for smart contracts that rely on IPFS storage.
 
-## Benefits of EVM Integration
+## Benefits of EVM Integration 🤖
 
 Unlike solutions like Filecoin that operate on separate networks, PinDAO's integration with EVM-compatible blockchains offers distinct advantages:
 
@@ -53,7 +53,7 @@ Unlike solutions like Filecoin that operate on separate networks, PinDAO's integ
 | Barriers to Entry                | Anyone with an IPFS node can earn | Storage miners require large-scale infra |
 | Decentralization                 | Distributed individual nodes      | Primarily large storage providers        |
 
-## Core Mechanisms
+## Core Mechanisms 🛠️
 
 ### 1. Wallet-Linked IPFS Nodes
 
@@ -94,9 +94,9 @@ Unlike solutions like Filecoin that operate on separate networks, PinDAO's integ
 
 - Nodes that consistently fail to meet protocol requirements can be banned from participating.
 - Banning is progressive:
-  - First offense: Short-term ban (e.g., 1 week)
-  - Repeated offenses: Increasingly longer bans
-  - Severe or multiple serious violations can result in permanent exclusion
+  - 🟡 First offense: Short-term ban (e.g., 1 week)
+  - 🟠 Repeated offenses: Increasingly longer bans
+  - 🔴 Severe or multiple serious violations can result in permanent exclusion
 - Banned nodes:
   - Lose access to the pinning queue
   - Forfeit pending rewards
