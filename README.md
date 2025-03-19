@@ -305,7 +305,7 @@ Potential use cases include services that monitor PinDAO node performance, open-
 
 ## Protocol Challenges 🏗️
 
-As with any new protocol, there are several key challenges that will need to be addresses. You can find a breakdown of the ones identified so far, their current status, and proposed solutions [here](CHALLENGES.md).
+As with any new protocol, there are several key challenges that will need to be addresses. You can find a breakdown of the ones identified so far, their current status, and proposed solutions [here](./docs/CHALLENGES.md).
 
 Key challenge areas include:
 
@@ -315,7 +315,7 @@ Key challenge areas include:
 - 🔗 Integration Challenges
 - 🌐 Competitive Landscape Considerations
 
-[Read the Full Challenges Document →](CHALLENGES.md)
+[Read the Full Challenges Document →](./docs/CHALLENGES.md)
 
 ## Community Collaboration 🤝
 
