@@ -1,4 +1,4 @@
-# PinDAO: A Community-Driven IPFS Pinning Protocol on EVM
+# PinDAO: A Community-Driven IPFS Pinning Protocol
 
 ## Abstract
 
