@@ -1,326 +1,563 @@
-# PinDAO: A Community-Driven IPFS Pinning Protocol 📌🌐
+# PinDAO: A Decentralized ETH-Based IPFS Pinning Protocol 📌🌐
 
-## Abstract 🔬
+## Abstract
 
-PinDAO is a decentralized protocol designed to incentivize distributed file persistence on the InterPlanetary File System (IPFS) through tokenized rewards on EVM-compatible blockchains. By leveraging reciprocal pinning and an auction-based queue system, PinDAO ensures reliable file availability while generating value for node operators and DAO participants.
+PinDAO is a decentralized protocol designed to incentivize persistent file storage on the InterPlanetary File System (IPFS) through direct ETH payments on Ethereum and compatible blockchains. By leveraging a decentralized network of storage providers, a fair node rotation queue system, and a reputation-based reward mechanism, PinDAO ensures reliable file availability and contract-level access to IPFS nodes for increased composability.
 
-## Introduction 🌍
+## Introduction
 
-IPFS lacks a native economic model for long-term file persistence. Many centralized pinning services exist, but undermine the principles of decentralization that distributed technology is founded upon. Other solutions like Filecoin and Arweave have stepped in to fill this gap, but they operate on their own siloed networks outside of EVM blockchains which often utilize IPFS for storage.
+IPFS has emerged as a powerful distributed file system, but it lacks native economic incentives to ensure long-term file persistence. When a file is uploaded to IPFS, there's no guarantee it will remain accessible unless someone actively "pins" it to their node.
 
-PinDAO introduces an EVM-native solution where nodes are rewarded for pinning files while enabling users to prioritize content storage through market mechanisms. Running PinDAO infrastructure directly on EVM networks enhances composability, accessibility, and efficiency for smart contracts that already rely on IPFS storage.
+Current solutions fall into three categories:
 
-## Benefits of EVM Integration 🤖
+1. Centralized pinning services (creating single points of failure)
+2. Custom blockchain networks like Filecoin and Arweave (requiring migration to separate ecosystems)
+3. Self-hosted infrastructure (resource-intensive and technically complex)
 
-Unlike other solutions for IPFS persistence like Filecoin that operate on a proprietary network, PinDAO's integration with EVM chains offers notable advantages:
-
-### 1. Direct Smart Contract Composability
-
-- Many NFT platforms, DAOs, and DeFi projects already store metadata and assets on IPFS, with smart contracts referencing these CIDs.
-  - For example, an NFT minting app can upload a file to IPFS on the frontend then automatically trigger a pinning request and attach a bounty for nodes to ensure its metadata persists.
-- Contracts can interact with pinning directly via on-chain logic, eliminating reliance on third-party services.
-- Chain-of-custody for IPFS uploads that originated onchain.
-
-### 2. Permissionless Integration
-
-- EVM dApps can call PinDAO's smart contract directly, whereas Filecoin requires custom APIs and deal negotiations.
-- Any smart contract can use PinDAO's auction mechanism to prioritize pinning in a trustless manner.
-- Accounts can directly pay nodes for storage costs onchain.
-- A DAO managing files on IPFS can programmatically allocate treasury funds to ensure long-term availability.
-
-### 3. DeFi Ecosystem Compatibility
-
-- $PIN tokenomics can integrate with DeFi protocols for staking, lending, and yield farming.
-- Liquidity Pools allow users to hedge against storage costs.
-
-### 4. Real-Time Settlement and Participation
-
-- Filecoin requires complex storage deals involving bidding, miner selection, and off-chain computation.
-- Platforms can use auction-based pinning to ensure content is widely replicated immediately.
-
-### 5. Democratized Storage Participation
-
-- PinDAO allows smaller distributed nodes to contribute storage without complex deal negotiations or additional overhead required with protocols like Filecoin.
-- Individual users running home IPFS nodes can earn rewards trustlessly rather than competing against industrial-scale miners.
-
-### Feature Comparison: PinDAO vs. Filecoin
-
-| Feature                          | PinDAO (EVM)                      | Filecoin                                 |
-| -------------------------------- | --------------------------------- | ---------------------------------------- |
-| Integration with Smart Contracts | Native & permissionless           | Requires off-chain agreements            |
-| Instant Token Payments           | Yes, through $PIN on-chain        | Requires Filecoin deal flow              |
-| Composability with DeFi          | Can stake, lend, yield farm $PIN  | No DeFi integration                      |
-| Storage Model                    | P2P with auction flexibility      | Long-term contract-based                 |
-| Barriers to Entry                | Anyone with an IPFS node can earn | Storage miners require large-scale infra |
-| Decentralization                 | Distributed individual nodes      | Primarily large storage providers        |
+PinDAO introduces a simple, Ethereum-native solution where IPFS node operators are directly rewarded in ETH for providing reliable pinning services, while users can prioritize their content through market-based mechanisms, all without requiring a separate token economy.
 
 ## Core Mechanisms 🛠️
 
 ### Wallet-Linked IPFS Nodes
 
-- Each participating IPFS node must connect an EVM wallet.
-- Nodes must stake a minimum amount of $PIN tokens to participate in the protocol.
-- Nodes receive $PIN tokens for pinning files from a shared queue.
-- Smart contracts track node participation, staking, and rewards distribution.
+Each participating IPFS node connects an Ethereum wallet and stake ETH as collateral to participate in the protocol. Nodes receive ETH payments for pinning files from users, with smart contracts tracking node participation, staking, and ensuring service delivery through community verification of pinned files.
 
-### Reciprocal Exchange & Reputation System
+### Fair Queue System
 
-- Nodes who pin files in proportion to their own requested storage receive a higher reputation.
-- The reputation system penalizes nodes that unpin files prematurely.
-- Higher reputation nodes receive better queue priority and higher rewards.
-- Nodes with repeated misbehavior can be temporarily or permanently banned from the network.
+Participating nodes are placed in a rotation queue to receive pinning assignments. After completing a job, the node moves to the back of the queue to ensure all participating nodes have fair access to earning opportunities. The base ETH cost per file is calculated based on file size and requested duration.
 
-### Auction-Based Pinning Queue
+### Reputation-Based Reward Distribution
 
-- Users who need guaranteed pinning can bid $PIN tokens for priority storage.
+Nodes build reputation based on reliability and service quality which determines the percentage of payment received from pin requests:
 
-### Direct IPFS Node Rewards
+- Highest reputation nodes receive 99% of payment
+- Lower reputation nodes receive proportionally less (down to 50%)
 
-- Users can pay nodes directly in $PIN to secure long-term pinning, creating a decentralized marketplace for storage beyond the reciprocal pinning model.
+Remaining percentage goes to the DAO treasury, with the DAO taking a base 1% of protocol revenue.
 
-### 5. Escrow & Protection Mechanism
+### Dual Pricing Models
 
-- All pinning payments vest linearly over the pinning duration to prevent "take the money and run" scenarios.
-- If a node unpins content prematurely, 95% of remaining escrowed tokens are returned to the payer, and 5% is awarded to the user who discovers and reports the misbehavior.
-  - This incentivizes community policing and ensures nodes are held accountable for their commitments.
+PinDAO supports two complementary pricing models:
 
-### 6. Node Banning Mechanism
+#### 1. Standard Queue-Based System
 
-- Nodes that consistently fail to meet protocol requirements can be banned from participating.
-- Banning is progressive:
+Users submit pinning requests with required ETH payment based on file size and duration. The protocol automatically assigns files to the next node(s) in the queue based on the specified replication factor.
 
-  🟡 **First offense:** Short-term ban (e.g., 1 week)
+#### 2. Direct Node Payments
 
-  🟠 **Repeated offenses:** Increasingly longer bans
+Users can bypass the queue and pay nodes directly in ETH for long-term pinning, creating a decentralized marketplace where users and nodes negotiate terms. In direct agreements, node reputation does not affect payment percentage.
 
-  🔴 **Severe or multiple serious violations can result in permanent exclusion**
+### Escrow & Protection Mechanism
 
-- Banned nodes:
-  - Lose access to the pinning queue
-  - Forfeit pending rewards
-  - Have their stake significantly reduced or completely slashed
-- The ban duration increases exponentially with each subsequent ban
-- Nodes can appeal bans through a decentralized governance process
+Funds are held in escrow and are vested linearly for the duration that pinning service is provided for. If a node unpins content prematurely, the remaining escrowed ETH is returned to the payer with 5% of returned funds being awarded to users who report violations, creating community incentives to report bad actors.
 
-## On-Chain Smart Contract Design
+### Node Banning Mechanism
 
-### Node Registration & Reputation
+Nodes that consistently fail to meet protocol requirements face progressive penalties to reputation and earnings:
 
-```solidity
-struct Node {
-    address wallet;              // Wallet address of node operator
-    string ipfsPeerId;           // Unique identifier for node
-    uint256 reputation;          // Cumulative score representing node reliability
-    uint256 stakedAmount;        // Total amount of tokens locked as collateral
-    uint256 autoStakePercentage; // Percentage of earned rewards automatically re-staked
-    uint256 lastActive;          // Timestamp of recent network activity
-    bool isActive;               // True if node is currently eligible
-    uint256 bannedUntil;         // Timestamp when temporary ban expires (0 if not banned)
-    uint256 banCount;            // # times node has been banned
-}
-```
+🟡 **First offense:** Short-term ban. First offenses do not incur a reputation strike.
 
-### File Pinning Queue & Auctions
+🟠 **Repeated offenses:** Increasingly longer ban and reputation hit. The more a node misbehaves, the lower it's reputation gets (down to 50%).
 
-```solidity
-struct FilePinRequest {
-    bytes32 cid;        // Content Identifier (CID) of file to be pinned
-    address requester;  // Address of user or contract requesting pin
-    uint256 duration;   // Total time period for which file should remain pinned
-    uint256 minReward;  // Minimum token reward required
-    uint256 bidAmount;  // Actual amount of $PIN tokens bid for prioritizing request
-    uint256 createdAt;  // Timestamp when pin request was submitted to queue
-    bool fulfilled;     // True if pin request has been successfully assigned to a node
-}
-```
+🔴 **Severe violations:** Perma-ban and slashing of staked ETH.
 
-### Node Pin Assignments & Rewards
+Bans are enforced transparently onchain, and appeals can be made through a decentralized governance process.
 
-```solidity
-struct NodePinAssignment {
-    bytes32 cid;            // CID of pinned file
-    address node;           // Address of node responsible for pinning
-    uint256 pinTimestamp;   // Timestamp when file was initially pinned
-    uint256 duration;       // Agreed-upon duration for maintaining pin
-    uint256 totalReward;    // Total $PIN tokens allocated for this assignment
-    uint256 claimedReward;  // Amount of rewards already claimed through vesting schedule
-    bool completed;         // True if pin assignment has been fully fulfilled
-}
-```
-
-### Purchase Pinning Directly
-
-```solidity
-struct DirectPayment {
-    address user;           // Address of user paying for pinning
-    address node;           // Address of node providing pinning service
-    bytes32 cid;            // Content Identifier of file being pinned
-    uint256 amount;         // Total amount of $PIN tokens paid for pinning
-    uint256 duration;       // Agreed-upon duration for maintaining pin
-    uint256 startTimestamp; // Timestamp when direct payment and pinning began
-    uint256 claimedAmount;  // Amount of rewards already claimed through vesting schedule
-    bool completed;         // True if direct payment has been fully processed
-}
-```
-
-### Vesting & Escrow
-
-```solidity
-struct VestingSchedule {
-    address beneficiary;    // Address of node receiving vested tokens
-    address payer;          // Address of user who initiated the payment
-    bytes32 cid;            // CID associated with this vesting schedule
-    uint256 startTimestamp; // Timestamp when vesting schedule begins
-    uint256 endTimestamp;   // Timestamp when vesting schedule completes
-    uint256 totalAmount;    // Total amount of $PIN tokens to be vested
-    uint256 claimedAmount;  // Amount of tokens already claimed by the beneficiary
-    bool active;            // Indicates if vesting schedule is currently valid
-}
-```
-
-## Smart Contract Functions
-
-### Node Registration & Staking
-
-Nodes must register with the PinDAO contract and stake a minimum amount of $PIN tokens to begin receiving requests.
-
-```solidity
-function registerNode(string memory ipfsPeerId, uint256 stakeAmount) external;
-function setAutoStakePercentage(uint256 percentage) external;
-function stakeAdditional(uint256 amount) external;
-function unstake(uint256 amount) external;
-```
-
-### Submit Pin Request
-
-Auction requests to pin content are submitted to the queue and can come from any address (EOA or contract) who provides a valid CID. Payment (in $PIN) is included with the request, and returned if unfulfilled.
-
-```solidity
-function submitPinRequest(bytes32 cid, uint256 duration, uint256 minReward, uint256 bidAmount) external;
-```
-
-### Assign Pin Request to Nodes
-
-PinDAO contracts will assign a requested pin to a node, whether decided through an auction or direct payment to a node. This creates a vesting schedule for the payment.
-
-```solidity
-function assignPin(bytes32 cid, address node, uint256 reward, uint256 duration) internal;
-```
-
-### Verify Pinning
-
-Allows any participant to verify that content is still being pinned. This should be processed through a service that atomically queries IPFS and verifies content backed by PinDAO.
-
-```solidity
-function verifyPin(bytes32 cid, address node) external;
-```
-
-### Claim Vested Rewards
-
-Nodes can claim their vested rewards as they accrue over time.
-
-```solidity
-function claimVestedRewards(bytes32 cid) external;
-function claimAllVestedRewards() external;
-```
-
-### Slash Nodes for Early Unpinning
-
-If nodes are found to be unpinning content before the agreed upon expiry, their future rewards and staked $PIN will be slashed. 95% of remaining tokens are returned to the payer, and 5% are awarded to the reporter.
-
-```solidity
-function reportUnpinnedContent(address node, bytes32 cid) external;
-function slashNode(address node, bytes32 cid, address reporter) internal;
-```
-
-### Direct Payments for Pinning
-
-Users who require pinned content can pay nodes directly to pin their content. The amount is agreed upon by both parties and held in escrow, vesting linearly.
-
-```solidity
-function payForPinning(address node, bytes32 cid, uint256 amount, uint256 duration) external;
-```
-
-### Node Banning Mechanisms
-
-Provides functions to manage node banning for protocol violations.
-
-```solidity
-function banNode(address node, uint256 duration) external;
-
-// Check if a node is currently banned
-function isNodeBanned(address node) external view returns (bool);
-
-// Get the remaining ban duration for a node
-function getBanDuration(address node) external view returns (uint256);
-
-// Allow a banned node to appeal their ban
-function appealBan() external;
-
-// Governance function to review and potentially lift or modify a ban
-function reviewNodeBan(address node, bool shouldLiftBan) external;
-```
-
-### Node Reputation Management
-
-```solidity
-// Increase a node's reputation for good behavior
-function increaseNodeReputation(address node, uint256 amount) internal;
-
-// Decrease a node's reputation for violations
-function decreaseNodeReputation(address node, uint256 amount) internal;
-
-// Get current node reputation
-function getNodeReputation(address node) external view returns (uint256);
-```
+✂️ Slashed ETH goes to the DAO treasury
 
 ## Verifier Services 🕵️‍♀️
 
-The structure of PinDAO provides an economic opportunity for participants called **Verifiers** who (you guessed it) verify the integrity of nodes providing pinning services and maintain network integrity by:
+The PinDAO protocol creates economic opportunities for **Verifiers** who maintain network integrity by checking IPFS for content availability promised by nodes and verifying that pinning commitments are being honored.
 
-- 🔍 Checking IPFS pins against expected PinDAO nodes
-- ✅ Verifying content availability and persistence
-- 🚨 Reporting nodes that fail to meet pinning commitments
-- 🏆 Earning rewards for maintaining network health
+**Verifiers:**
+🚨 Reporting nodes that fail to meet obligations
+🏆 Earning ETH rewards (5% of remaining escrow) for maintaining network health
 
 ### How Verifier Services Work
 
-1. **Automated Monitoring**: Verifiers continuously scan the network, checking the actual availability of pinned content on IPFS
-2. **Reputation Enforcement**: Automatically trigger reputation mechanisms for nodes that fail to maintain pins
-3. **Economic Incentives**: Earn a percentage of slashed tokens when reporting misbehaving nodes
+1. **Automated Monitoring**: Verifiers scan the network, checking actual availability of pinned content
+2. **Reputation Enforcement**: Trigger the protocol's reputation mechanisms for failing nodes
+3. **Economic Incentives**: Earn a percentage of returned funds when reporting violations
 
-Potential use cases include services that monitor PinDAO node performance, open-source verification scripts, and comprehensive pin tracking and reporting systems.
+This creates a market for developers to build services around PinDAO, such as IPFS availability monitors, node reputation tracking dashboards, and analytics tools,.
 
-> 💡 This opens up a new market for developers to create value-added services around the PinDAO ecosystem, turning network monitoring into a potential revenue stream.
+## DAO Treasury and Fees
+
+PinDAO collects fees that go directly to the DAO treasury:
+
+1. **Queue-Based Assignments**: A percentage of each payment based on node reputation:
+
+   - 1% from highest reputation nodes (99% to node)
+   - Up to 50% from lowest reputation nodes (50% to node)
+
+2. **Direct Payments**: Flat 1% fee on all direct agreements between users and nodes
+
+## Comparison with Other Storage Solutions
+
+| Feature                        | PinDAO                       | Filecoin                    | Arweave            | Centralized Pinning |
+| ------------------------------ | ---------------------------- | --------------------------- | ------------------ | ------------------- |
+| **Native Currency**            | ETH                          | FIL                         | AR                 | Various             |
+| **Smart Contract Integration** | Direct                       | Limited                     | Limited            | None                |
+| **Barrier to Entry**           | Low (standard IPFS node)     | High (specialized hardware) | Medium             | N/A                 |
+| **Payment Model**              | Queue-based + direct payment | Long-term contracts         | One-time perpetual | Subscription        |
+| **Node Selection**             | Fair queue rotation          | Auction/manual deals        | Miners compete     | Centralized         |
+| **Storage Verification**       | Community-driven             | Proof-of-Spacetime          | Proof-of-Access    | Centralized         |
+| **Content Addressing**         | IPFS CIDs                    | IPFS CIDs                   | Transaction-based  | Proprietary         |
+| **Node Economics**             | Reputation-based rewards     | Complex deal structure      | Endowment-based    | Fixed pricing       |
+| **Censorship Resistance**      | High                         | High                        | Very High          | Low                 |
+
+### Why Choose PinDAO?
+
+1. **Ethereum Native**: Uses ETH directly, no need for token swaps or bridges
+2. **Fair Distribution**: Queue-based system ensures all nodes get opportunities
+3. **Incentive Alignment**: Reputation affects rewards, not job access
+4. **Low Barrier**: Anyone with an IPFS node can participate and earn
+5. **Transparent**: All commitments and payments are visible on-chain
+6. **Sustainable**: DAO treasury ensures long-term protocol development
 
 ## Security & Sustainability
 
-- **Stake-Based Participation**: Required staking ensures nodes have skin in the game, reducing Sybil attacks.
-- **Linear Vesting Model**: Rewards vest over time, aligning node operators with long-term file persistence.
-- **Community Policing**: The 5% bounty for reporting unpinned content creates a decentralized verification network.
-- **Smart Contract Verification**: All transactions and reward mechanisms operate transparently on-chain.
-- **Economic Penalties**: Slashing mechanisms ensure significant economic consequences for malicious behavior.
-- **Progressive Node Banning**: Nodes that repeatedly violate protocol rules face escalating penalties, preventing persistent bad actors from exploiting the network.
-- **Decentralized Arbitration**: Disputes over uptime and availability are resolved via community governance.
+- **Stake-Based Participation**: Required ETH staking ensures nodes have skin in the game
+- **Linear Vesting Model**: Payments release over time, aligning incentives for long-term storage
+- **Community Policing**: The 5% bounty for reporting violations creates distributed oversight
+- **Transparent Queue**: Fair job distribution prevents centralization
+- **Reputation Economics**: Better performance leads to higher earnings percentage
+- **Progressive Banning**: Repeat offenders face escalating penalties
+- **Sustainable Treasury**: Protocol fees fund ongoing development and maintenance
 
-## Protocol Challenges 🏗️
+---
 
-As with any new protocol, there are several key challenges that will need to be addresses. You can find a breakdown of the ones identified so far, their current status, and proposed solutions [here](./docs/CHALLENGES.md).
+## Smart Contract Design
 
-Key challenge areas include:
+Below is an outline of proposed smart contract design for PinDAO. This code is not tested and should not be used in a production environment.
 
-- 🖥️ Technical Challenges
-- 💸 Economic Challenges
-- 🤝 Governance Challenges
-- 🔗 Integration Challenges
-- 🌐 Competitive Landscape Considerations
+### Node Registration & Queue Management
 
-[Read the Full Challenges Document →](./docs/CHALLENGES.md)
+Structure of an onchain IPFS node
+
+```js
+struct Node {
+    address payable wallet;   // Wallet address of node operator
+    string ipfsPeerId;        // Unique identifier for IPFS node
+    uint256 reputation;       // Score representing node reliability (0-100)
+    uint256 stakedAmount;     // Total ETH locked as collateral
+    uint256 lastActive;       // Timestamp of most recent activity
+    bool isActive;            // Whether node is currently eligible for assignments
+    uint256 bannedUntil;      // Timestamp when temporary ban expires (0 if not banned)
+    uint256 banCount;         // Number of times node has been banned
+    uint256 totalEarned;      // Total ETH earned through the protocol
+    mapping(bytes32 => bool) activePins;  // Currently pinned content
+}
+```
+
+Implementation of the node queue system.
+
+```js
+address[] private nodeQueue;
+mapping(address => uint256) private nodeQueuePosition;
+```
+
+New nodes register with their `peerId` by staking ETH and are placed at the end of the queue.
+
+```js
+function registerNode(string calldata ipfsPeerId) external payable {
+    require(msg.value >= MINIMUM_STAKE, "Insufficient stake");
+    require(nodeQueuePosition[msg.sender] == 0, "Already registered");
+
+    nodes[msg.sender] = Node({
+        wallet: payable(msg.sender),
+        ipfsPeerId: ipfsPeerId,
+        reputation: INITIAL_REPUTATION,
+        stakedAmount: msg.value,
+        lastActive: block.timestamp,
+        isActive: true,
+        bannedUntil: 0,
+        banCount: 0,
+        totalEarned: 0
+    });
+
+    // Add node to the end of the queue
+    nodeQueue.push(msg.sender);
+    nodeQueuePosition[msg.sender] = nodeQueue.length;
+
+    emit NodeRegistered(msg.sender, ipfsPeerId, msg.value);
+}
+```
+
+Nodes are rotated to the back of the queue after being assigned a pin request.
+
+```js
+function _rotateNodeInQueue(address node) internal {
+    uint256 pos = nodeQueuePosition[node];
+    require(pos > 0, "Node not in queue");
+
+    // Remove node from current position
+    for (uint i = pos; i < nodeQueue.length; i++) {
+        nodeQueue[i-1] = nodeQueue[i];
+        nodeQueuePosition[nodeQueue[i]] = i;
+    }
+
+    // Put node at end of queue
+    nodeQueue[nodeQueue.length - 1] = node;
+    nodeQueuePosition[node] = nodeQueue.length;
+}
+```
+
+Contract gets the next available nodes from the queue
+
+```js
+function _getNextAvailableNodes(uint8 count) internal view returns (address[] memory) {
+    address[] memory availableNodes = new address[](count);
+    uint256 found = 0;
+
+    for (uint i = 0; i < nodeQueue.length && found < count; i++) {
+        address nodeAddr = nodeQueue[i];
+        if (nodes[nodeAddr].isActive && nodes[nodeAddr].bannedUntil < block.timestamp) {
+            availableNodes[found] = nodeAddr;
+            found++;
+        }
+    }
+
+    require(found == count, "Not enough available nodes");
+    return availableNodes;
+}
+```
+
+### File Pinning Requests & Pricing
+
+Structure of an onchain pin request
+
+```js
+struct PinRequest {
+    bytes32 cid;                 // Content Identifier (CID) of file
+    address payable user;        // Address of requestor
+    uint256 duration;            // Time period (in seconds) for pinning
+    uint256 fileSize;            // Size of file in bytes
+    uint256 payment;             // Total ETH payment
+    uint256 createdAt;           // Timestamp when request was submitted
+    bool fulfilled;              // Whether request has been assigned to nodes
+    uint8 replicationFactor;     // Number of nodes to pin the content
+}
+```
+
+The price of a pin request is determined based on file size and duration the pin is requested for. DAO fees can be updated by governance proposals but is initialized at 1%.
+
+```js
+function calculateBasePrice(uint256 fileSize, uint256 duration) public pure returns (uint256) {
+    // Example pricing formula
+    // Base price = (fileSize in MB * 0.0001 ETH) * (duration in days / 30)
+    uint256 fileSizeInMB = fileSize / (1024 * 1024);
+    uint256 durationInDays = duration / 86400;
+
+    return (fileSizeInMB * 1e14 * durationInDays) / 30;
+}
+```
+
+Pin requests are submitted with a `replicationFactor` that determines how many nodes should pin the file. Payment cost is `(fileSize * duration) * replicationFactor` and paid at the time of submission, after which the payment is split between the number of participating nodes and their respective fees (modified by reputation) are vested to them.
+
+```js
+function submitPinRequest(
+    bytes32 cid,
+    uint256 fileSize,
+    uint256 duration,
+    uint8 replicationFactor
+) external payable {
+    // Calculate minimum required payment
+    uint256 basePrice = calculateBasePrice(fileSize, duration);
+    uint256 totalPrice = basePrice * replicationFactor;
+
+    require(msg.value >= totalPrice, "Insufficient payment");
+    require(duration >= MIN_DURATION, "Duration too short");
+    require(replicationFactor > 0, "Must request at least one node");
+
+    uint256 requestId = _nextRequestId++;
+
+    pinRequests[requestId] = PinRequest({
+        cid: cid,
+        user: payable(msg.sender),
+        duration: duration,
+        fileSize: fileSize,
+        payment: msg.value,
+        createdAt: block.timestamp,
+        fulfilled: false,
+        replicationFactor: replicationFactor
+    });
+
+    // Process the request immediately
+    _processRequest(requestId);
+
+    emit PinRequestSubmitted(requestId, cid, msg.sender, msg.value, duration);
+}
+```
+
+### Node Assignments & Reputation-Based Payments
+
+Structure of successful pin assignment to a node.
+
+```js
+struct PinAssignment {
+    bytes32 cid;            // CID of pinned file
+    address node;           // Address of assigned node
+    address payable user;   // User who requested the pinning
+    uint256 startTime;      // When pinning began
+    uint256 endTime;        // When pinning should end
+    uint256 totalPayment;   // Total ETH allocated for this assignment
+    uint256 claimedAmount;  // ETH already claimed through vesting
+    bool active;            // Whether assignment is currently active
+}
+```
+
+Payment percentage is calculated based on node reputation. At max reputation (100) a node receives 99% of fees. At 0 reputation, a node gets 50% of the fees, with a linear scale between. Nodes with 0 reputation who receive another strike are banned from participation.
+
+```js
+function _calculatePaymentPercentage(uint256 reputation) internal pure returns (uint256) {
+    uint256 basePercentage = 50;
+    // Multiply reputation (0-100) by 49 (difference between min & max payment received) to get the variable portion
+    uint256 variablePercentage = (reputation * 49) / 100;
+
+    return basePercentage + variablePercentage;
+}
+```
+
+Requests are processed from the queue, selecting next available nodes and processing their reputation-based payment into a linear vesting schedule.
+
+```js
+function _processRequest(uint256 requestId) internal {
+    PinRequest storage request = pinRequests[requestId];
+    require(!request.fulfilled, "Request already fulfilled");
+
+    // Get the next available nodes
+    address[] memory selectedNodes = _getNextAvailableNodes(request.replicationFactor);
+
+    uint256 paymentPerNode = request.payment / request.replicationFactor;
+    uint256 daoFee = 0;
+
+    for (uint i = 0; i < selectedNodes.length; i++) {
+        address node = selectedNodes[i];
+
+        // Calculate node's payment based on reputation
+        uint256 paymentPercentage = _calculatePaymentPercentage(nodes[node].reputation);
+        uint256 nodePayment = (paymentPerNode * paymentPercentage) / 100;
+
+        // Track DAO fee (remainder)
+        daoFee += paymentPerNode - nodePayment;
+
+        // Create assignment with vesting schedule
+        uint256 assignmentId = _nextAssignmentId++;
+
+        pinAssignments[assignmentId] = PinAssignment({
+            cid: request.cid,
+            node: node,
+            user: request.user,
+            startTime: block.timestamp,
+            endTime: block.timestamp + request.duration,
+            totalPayment: nodePayment,
+            claimedAmount: 0,
+            active: true
+        });
+
+        // Update node's active pins
+        nodes[node].activePins[request.cid] = true;
+
+        // Rotate node to back of queue
+        _rotateNodeInQueue(node);
+
+        emit PinAssigned(assignmentId, request.cid, node, nodePayment, request.duration);
+    }
+
+    // Send DAO fee to treasury
+    if (daoFee > 0) {
+        (bool success, ) = daoTreasury.call{value: daoFee}("");
+        require(success, "DAO fee transfer failed");
+        emit DAOFeeCollected(requestId, daoFee);
+    }
+
+    request.fulfilled = true;
+}
+```
+
+### Direct Payments
+
+In addition to the queue system, users can select and pay a node directly.
+
+```js
+struct DirectPayment {
+    bytes32 cid;                // Content Identifier
+    address payable node;       // Node providing service
+    address payable user;       // User paying for service
+    uint256 amount;             // Total ETH paid to node
+    // DAO fee initialized at 1% but can be modified by governance proposals
+    uint256 daoFee;             // Fee collected by DAO
+    uint256 startTime;          // When agreement began
+    uint256 endTime;            // When service should end
+    uint256 claimedAmount;      // ETH already claimed
+    bool active;                // Current status
+}
+```
+
+Direct payments are negotiated between both parties and bypasses reputation, meaning that nodes paid directly receive the full fee (minus DAO percentage).
+
+```js
+function payNodeDirectly(
+    address payable node,
+    bytes32 cid,
+    uint256 duration
+) external payable {
+    require(msg.value > 0, "Payment required");
+    require(nodes[node].isActive, "Node not active");
+    require(nodes[node].bannedUntil < block.timestamp, "Node is banned");
+
+    // Calculate basis points for DAO fee (100 = 1%)
+    uint256 daoFee = (msg.value * daoFeePercentage) / 10000;
+    uint256 nodePayment = msg.value - daoFee;
+
+    uint256 paymentId = _nextDirectPaymentId++;
+
+    directPayments[paymentId] = DirectPayment({
+        cid: cid,
+        node: node,
+        user: payable(msg.sender),
+        amount: nodePayment,
+        daoFee: daoFee,
+        startTime: block.timestamp,
+        endTime: block.timestamp + duration,
+        claimedAmount: 0,
+        active: true
+    });
+
+    // Update node's active pins
+    nodes[node].activePins[cid] = true;
+
+    // Send DAO fee
+    (bool success, ) = daoTreasury.call{value: daoFee}("");
+    require(success, "DAO fee transfer failed");
+
+    emit DirectPaymentCreated(paymentId, cid, node, msg.sender, nodePayment, daoFee, duration);
+}
+```
+
+### Claiming Vested Payments
+
+At any time during an active assignment, a node can claim the ETH currently being vested to them.
+
+```js
+function claimVestedPayment(uint256 assignmentId) external {
+    PinAssignment storage assignment = pinAssignments[assignmentId];
+
+    require(msg.sender == assignment.node, "Not authorized");
+    require(assignment.active, "Assignment not active");
+
+    // Calculate vested amount
+    uint256 totalDuration = assignment.endTime - assignment.startTime;
+    uint256 elapsed = block.timestamp - assignment.startTime;
+
+    uint256 vestedAmount;
+    if (block.timestamp >= assignment.endTime) {
+        vestedAmount = assignment.totalPayment;
+    } else {
+        vestedAmount = (assignment.totalPayment * elapsed) / totalDuration;
+    }
+
+    uint256 claimableAmount = vestedAmount - assignment.claimedAmount;
+    require(claimableAmount > 0, "No funds to claim");
+
+    // Update claimed amount
+    assignment.claimedAmount += claimableAmount;
+
+    // Transfer ETH to node
+    (bool success, ) = assignment.node.call{value: claimableAmount}("");
+    require(success, "Transfer failed");
+
+    // Update node's total earned
+    nodes[assignment.node].totalEarned += claimableAmount;
+
+    emit PaymentClaimed(assignmentId, assignment.node, claimableAmount);
+}
+```
+
+### Verification & Slashing
+
+If a node is found to have prematurely unpinned an item, or is offline long enough for IPFS garbage collection to remove the pin, **verifiers** can report them to the protocol.
+
+> ⚠️ **NOTE:** The verification procedure needs a lot of work to ensure that it's reliable and doesn't maliciously target nodes who are behaving.
+
+```js
+function reportUnpinnedContent(bytes32 cid, address node, uint256 assignmentId) external {
+    PinAssignment storage assignment = pinAssignments[assignmentId];
+
+    require(assignment.cid == cid, "CID mismatch");
+    require(assignment.node == node, "Node mismatch");
+    require(assignment.active, "Assignment not active");
+
+    // Verification logic to confirm content is indeed not pinned
+    bool contentUnpinned = _verifyContentIsUnpinned(cid, node);
+    require(contentUnpinned, "Content is still pinned");
+
+    // Calculate remaining payment
+    uint256 remainingFunds = assignment.totalPayment - assignment.claimedAmount;
+
+    if (remainingFunds > 0) {
+        // Return 95% to user
+        uint256 userRefund = (remainingFunds * 95) / 100;
+        (bool successUser, ) = assignment.user.call{value: userRefund}("");
+        require(successUser, "User refund failed");
+
+        // Award 5% to reporter
+        uint256 reporterReward = remainingFunds - userRefund;
+        (bool successReporter, ) = payable(msg.sender).call{value: reporterReward}("");
+        require(successReporter, "Reporter reward failed");
+
+        emit SlashingExecuted(assignmentId, node, userRefund, msg.sender, reporterReward);
+    }
+
+    // Mark assignment as inactive
+    assignment.active = false;
+
+    // Remove from node's active pins
+    nodes[node].activePins[cid] = false;
+
+    // Decrease node reputation
+    _decreaseReputation(node, SLASHING_REPUTATION_PENALTY);
+
+    // Check if ban is warranted
+    _evaluateBanning(node);
+}
+```
+
+Ideally, **verifiers** would interact with reputation-altering functions through an oracle or other interface that can atomically check IPFS pin status against contract storage. For the actual implementation, this would check IPFS network.
+
+```js
+function _verifyContentIsUnpinned(bytes32 cid, address node) internal returns (bool) {
+    //
+    // Returns true if content is confirmed to be unpinned
+    //
+    return true;
+}
+```
+
+## Challenges & Considerations 🏗️
+
+As with any novel application there are a number of challenges and additional considerations that will need to be worked on as PinDAO is developed. Some of these will have to be addressed before a mainnet launch, while others can be addressed later through community proposals.
+
+You can find a non-exhaustive list of development challenges and considerations [here](CHALLENGES.md).
 
 ## Community Collaboration 🤝
 
-PinDAO has many opportunities for ongoing research, development, and community collaboration. We welcome contributions from:
+The goal is for PinDAO to be run by stakeholders who would utilize the service as content providers, nodes, or verifiers. As such, we welcome contributions from:
 
-- 🔬 Researchers
-- 💻 Developers
-- 🌐 Community members
+- 🔬 Researchers exploring storage incentivization models
+- 💻 Developers building on the protocol or creating verification tools
+- 🌐 IPFS node operators interested in monetizing their infrastructure
+- 🧪 Users with high-value storage needs seeking reliable solutions
+
+## Conclusion
+
+This document outlines the vision for PinDAO, an ETH-based decentralized storage incentivization layer for IPFS. The protocol leverages Ethereum's security, liquidity, and composability to create reliable distributed storage with fair access for all participating nodes.
+
+By providing direct economic incentives for IPFS pinning through a balanced queue system, PinDAO helps bridge the gap between decentralized storage technology and practical applications that require persistence guarantees.
+
+---
+
+### Contact
+
+If you have any questions, open an issue or discussio thread, or reach out on [Warpcast](https://warpcast.com/jonbray.eth).
