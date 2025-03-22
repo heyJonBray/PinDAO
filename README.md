@@ -1,8 +1,8 @@
-# PinDAO: A Decentralized ETH-Based IPFS Pinning Protocol 📌🌐
+# Pin.sol: A Decentralized ETH-Based IPFS Pinning Protocol 📌🌐
 
 ## Abstract
 
-PinDAO is a decentralized protocol designed to incentivize persistent file storage on the InterPlanetary File System (IPFS) through direct ETH payments on Ethereum and compatible blockchains. By leveraging a decentralized network of storage providers, a fair node rotation queue system, and a reputation-based reward mechanism, PinDAO ensures reliable file availability and contract-level access to IPFS nodes for increased composability.
+Pin.sol is a decentralized protocol designed to incentivize persistent file storage on the InterPlanetary File System (IPFS) through direct ETH payments on Ethereum and compatible blockchains. By leveraging a decentralized network of storage providers, a fair node rotation queue system, and a reputation-based reward mechanism, Pin.sol ensures reliable file availability and contract-level access to IPFS nodes for increased composability.
 
 ## Introduction
 
@@ -14,7 +14,7 @@ Current solutions fall into three categories:
 2. Custom blockchain networks like Filecoin and Arweave (requiring migration to separate ecosystems)
 3. Self-hosted infrastructure (resource-intensive and technically complex)
 
-PinDAO introduces a simple, Ethereum-native solution where IPFS node operators are directly rewarded in ETH for providing reliable pinning services, while users can prioritize their content through market-based mechanisms, all without requiring a separate token economy.
+Pin.sol introduces a simple, Ethereum-native solution where IPFS node operators are directly rewarded in ETH for providing reliable pinning services, while users can prioritize their content through market-based mechanisms, all without requiring a separate token economy.
 
 ## Core Mechanisms 🛠️
 
@@ -37,7 +37,7 @@ Remaining percentage goes to the DAO treasury, with the DAO taking a base 1% of 
 
 ### Dual Pricing Models
 
-PinDAO supports two complementary pricing models:
+Pin.sol supports two complementary pricing models:
 
 #### 1. Standard Queue-Based System
 
@@ -67,7 +67,7 @@ Bans are enforced transparently onchain, and appeals can be made through a decen
 
 ## Verifier Services 🕵️‍♀️
 
-The PinDAO protocol creates economic opportunities for **Verifiers** who maintain network integrity by checking IPFS for content availability promised by nodes and verifying that pinning commitments are being honored.
+The Pin.sol protocol creates economic opportunities for **Verifiers** who maintain network integrity by checking IPFS for content availability promised by nodes and verifying that pinning commitments are being honored.
 
 **Verifiers:**
 🚨 Reporting nodes that fail to meet obligations
@@ -79,11 +79,11 @@ The PinDAO protocol creates economic opportunities for **Verifiers** who maintai
 2. **Reputation Enforcement**: Trigger the protocol's reputation mechanisms for failing nodes
 3. **Economic Incentives**: Earn a percentage of returned funds when reporting violations
 
-This creates a market for developers to build services around PinDAO, such as IPFS availability monitors, node reputation tracking dashboards, and analytics tools,.
+This creates a market for developers to build services around Pin.sol, such as IPFS availability monitors, node reputation tracking dashboards, and analytics tools,.
 
 ## DAO Treasury and Fees
 
-PinDAO collects fees that go directly to the DAO treasury:
+Pin.sol collects fees that go directly to the DAO treasury:
 
 1. **Queue-Based Assignments**: A percentage of each payment based on node reputation:
 
@@ -94,7 +94,7 @@ PinDAO collects fees that go directly to the DAO treasury:
 
 ## Comparison with Other Storage Solutions
 
-| Feature                        | PinDAO                       | Filecoin                    | Arweave            | Centralized Pinning |
+| Feature                        | Pin.sol                      | Filecoin                    | Arweave            | Centralized Pinning |
 | ------------------------------ | ---------------------------- | --------------------------- | ------------------ | ------------------- |
 | **Native Currency**            | ETH                          | FIL                         | AR                 | Various             |
 | **Smart Contract Integration** | Direct                       | Limited                     | Limited            | None                |
@@ -106,7 +106,7 @@ PinDAO collects fees that go directly to the DAO treasury:
 | **Node Economics**             | Reputation-based rewards     | Complex deal structure      | Endowment-based    | Fixed pricing       |
 | **Censorship Resistance**      | High                         | High                        | Very High          | Low                 |
 
-### Why Choose PinDAO?
+### Why Choose Pin.sol?
 
 1. **Ethereum Native**: Uses ETH directly, no need for token swaps or bridges
 2. **Fair Distribution**: Queue-based system ensures all nodes get opportunities
@@ -129,7 +129,7 @@ PinDAO collects fees that go directly to the DAO treasury:
 
 ## Smart Contract Design
 
-Below is an outline of proposed smart contract design for PinDAO. This code is not tested and should not be used in a production environment.
+Below is an outline of proposed smart contract design for Pin.sol. This code is not tested and should not be used in a production environment.
 
 ### Node Registration & Queue Management
 
@@ -537,13 +537,13 @@ function _verifyContentIsUnpinned(bytes32 cid, address node) internal returns (b
 
 ## Challenges & Considerations 🏗️
 
-As with any novel application there are a number of challenges and additional considerations that will need to be worked on as PinDAO is developed. Some of these will have to be addressed before a mainnet launch, while others can be addressed later through community proposals.
+As with any novel application there are a number of challenges and additional considerations that will need to be worked on as Pin.sol is developed. Some of these will have to be addressed before a mainnet launch, while others can be addressed later through community proposals.
 
 You can find a non-exhaustive list of development challenges and considerations [here](CHALLENGES.md).
 
 ## Community Collaboration 🤝
 
-The goal is for PinDAO to be run by stakeholders who would utilize the service as content providers, nodes, or verifiers. As such, we welcome contributions from:
+The goal is for Pin.sol to be run by stakeholders who would utilize the service as content providers, nodes, or verifiers. As such, we welcome contributions from:
 
 - 🔬 Researchers exploring storage incentivization models
 - 💻 Developers building on the protocol or creating verification tools
@@ -552,9 +552,9 @@ The goal is for PinDAO to be run by stakeholders who would utilize the service a
 
 ## Conclusion
 
-This document outlines the vision for PinDAO, an ETH-based decentralized storage incentivization layer for IPFS. The protocol leverages Ethereum's security, liquidity, and composability to create reliable distributed storage with fair access for all participating nodes.
+This document outlines the vision for Pin.sol, an ETH-based decentralized storage incentivization layer for IPFS. The protocol leverages Ethereum's security, liquidity, and composability to create reliable distributed storage with fair access for all participating nodes.
 
-By providing direct economic incentives for IPFS pinning through a balanced queue system, PinDAO helps bridge the gap between decentralized storage technology and practical applications that require persistence guarantees.
+By providing direct economic incentives for IPFS pinning through a balanced queue system, Pin.sol helps bridge the gap between decentralized storage technology and practical applications that require persistence guarantees.
 
 ---
 
